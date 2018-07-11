@@ -26,6 +26,6 @@ private:
 
 };
 
-#include "instruccion.hpp"
+
 
 #endif // INSTRUCCION_H_

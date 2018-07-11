@@ -5,6 +5,7 @@
 #include "utils.h"
 #include "Ventana.h"
 #include "programa.h"
+#include "instruccion.h"
 #include <stack>
 #include <tuple>
 #include <list>
@@ -76,7 +77,5 @@ int dirMemoriaActual;
 stack<int> pila;
 
 };
-
-#include "calculadora.hpp"
 
 #endif // CALCULADORA_H_

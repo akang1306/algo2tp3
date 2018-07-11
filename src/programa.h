@@ -26,6 +26,5 @@ private:
 	string_map<tuple <rutina, vector<Instruccion>>> instruccionesPorRutina;
 };
 
-#include "programa.hpp"
 
 #endif // PROGRAMA_H_

@@ -31,11 +31,11 @@ string_map<T>& string_map<T>::operator=(const string_map<T>& d) {
       return *this;
     }else{
       raiz = new Nodo;
-      iguales_recursivo(raiz, d.raiz);
+    //  iguales_recursivo(raiz, d.raiz);
     }
     return *this;
 }
-
+/*
 template<typename T>
 void string_map<T>::iguales_recursivo( Nodo* p1, const Nodo* p2){
   if(p2->definicion){
@@ -51,7 +51,7 @@ void string_map<T>::iguales_recursivo( Nodo* p1, const Nodo* p2){
       }
     }
 }
-
+*/
 template<typename T>
 void string_map<T>::destructor_recursivo(Nodo* p ){
   int i = 0;

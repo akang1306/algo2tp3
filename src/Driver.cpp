@@ -3,6 +3,7 @@
 Driver::Driver() {
     // COMPLETAR
     _programa = Programa();
+    calculadora(_programa, "a", 0);
 }
 
 Driver::~Driver() {

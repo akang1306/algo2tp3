@@ -3,6 +3,8 @@
 
 #include <string>
 #include "calculadora.h"
+#include "instruccion.h"
+#include "programa.h"
 
 using namespace std;
 

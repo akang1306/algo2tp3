@@ -1,3 +1,4 @@
+#include "instruccion.h"
 Instruccion::Instruccion(int op, int val, string var, string rut) {
   _op = op;
   _var = var;

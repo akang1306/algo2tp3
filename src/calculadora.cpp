@@ -1,3 +1,5 @@
+#include "calculadora.h"
+
 int busquedaBinaria(Ventana<tuple<int, int>> ventana, int min, int max, int value){
     int tam = max - min;
     if(tam > 1){
@@ -11,11 +13,14 @@ int busquedaBinaria(Ventana<tuple<int, int>> ventana, int min, int max, int valu
           return mid;
         }
       }
-    }else{
-      return min;
     }
+    return min;
 }
 
+calculadora::calculadora(){
+    dirMemoriaActual = -1;
+
+}
 calculadora::calculadora(Programa program, rutina rut, int w){
   int long_total = 0;
   set<rutina> rutinas = program.rutinas();
