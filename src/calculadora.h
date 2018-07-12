@@ -17,7 +17,7 @@ class calculadora {
 public:
 
 	calculadora();
-	calculadora(Programa program, rutina rut, int w);
+	calculadora(Programa &program, rutina &rut, int w);
 	/*  FUNCIONES DE PROGRAMA
 	longitud(programa, rutina) -> int
 	rutinas(programa) -> conj(rutina)

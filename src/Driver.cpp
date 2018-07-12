@@ -3,7 +3,7 @@
 Driver::Driver() {
     // COMPLETAR
     _programa = Programa();
-    calculadora(_programa, "a", 0);
+    calculadora();
 }
 
 Driver::~Driver() {
@@ -23,49 +23,49 @@ void Driver::end(string rutina) {
 
 void Driver::push(int n) {
     // COMPLETAR
-    Instruccion push = Instruccion(PUSH, n, 0, 0);
+    Instruccion push = Instruccion(PUSH, n, "", "");
     _programa.agregarInstruccion(rutina_actual, push);
 }
 
 void Driver::add() {
     // COMPLETAR
-    Instruccion push = Instruccion(ADD, 0, 0, 0);
+    Instruccion push = Instruccion(ADD, 0, "", "");
     _programa.agregarInstruccion(rutina_actual, push);
 }
 
 void Driver::sub() {
     // COMPLETAR
-    Instruccion push = Instruccion(SUB, 0, 0, 0);
+    Instruccion push = Instruccion(SUB, 0, "", "");
     _programa.agregarInstruccion(rutina_actual, push);
 }
 
 void Driver::mul() {
     // COMPLETAR
-    Instruccion push = Instruccion(MULT, 0, 0, 0);
+    Instruccion push = Instruccion(MULT, 0, "", "");
     _programa.agregarInstruccion(rutina_actual, push);
 }
 
 void Driver::read(string variable) {
     // COMPLETAR
-    Instruccion push = Instruccion(READ, 0, variable, 0);
+    Instruccion push = Instruccion(READ, 0, variable, "");
     _programa.agregarInstruccion(rutina_actual, push);
 }
 
 void Driver::write(string variable) {
     // COMPLETAR
-    Instruccion push = Instruccion(WRITE, 0, variable, 0);
+    Instruccion push = Instruccion(WRITE, 0, variable, "");
     _programa.agregarInstruccion(rutina_actual, push);
 }
 
 void Driver::jump(string rutina) {
     // COMPLETAR
-    Instruccion push = Instruccion(JUMP, 0, 0, rutina);
+    Instruccion push = Instruccion(JUMP, 0, "", rutina);
     _programa.agregarInstruccion(rutina_actual, push);
 }
 
 void Driver::jumpz(string rutina) {
     // COMPLETAR
-    Instruccion push = Instruccion(JUMPZ, 0, 0, rutina);
+    Instruccion push = Instruccion(JUMPZ, 0, "", rutina);
     _programa.agregarInstruccion(rutina_actual, push);
 }
 
@@ -73,7 +73,9 @@ void Driver::jumpz(string rutina) {
 
 void Driver::comenzarEjecucion(string rutina, int capacidadVentana) {
     // COMPLETAR
+
     _calculadora = calculadora(_programa, rutina, capacidadVentana);
+    int i = 0;
 }
 
 void Driver::asignarVariable(string x, int valor) {

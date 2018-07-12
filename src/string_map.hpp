@@ -230,7 +230,7 @@ Ventana<tuple<int, int>>* string_map<T>::definir_ventana(string clave, Ventana<t
       buscador = buscador->siguientes[int(clave[i])];
     }
     if(buscador->definicion == NULL ){
-          buscador->definicion = new T(significado.tam());
+          buscador->definicion = new Ventana<tuple<int, int>>(significado.tam());
           _size ++;
     }
     *(buscador->definicion) = significado;
