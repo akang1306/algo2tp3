@@ -124,8 +124,16 @@ void calculadora::ejecutar(){
               dirMemoriaActual = -1;
           }
       }
-      if (instr_a_ejecutar.op == JUMPZ && !pila.empty()) {
-          if (pila.top() == 0) {
+      if (instr_a_ejecutar.op == JUMPZ) {
+          if(pila.empty()){
+              tupla_rutina *it_nueva_rutina = instr_a_ejecutar.itRut;
+              if (it_nueva_rutina) {
+                  dirMemoriaActual = it_nueva_rutina->direccion;
+                  longitudRutinaActual = it_nueva_rutina->longitud;
+                  indiceInstrActualEnRut = 0;
+                  rutinaActual = it_nueva_rutina->nombre;
+              }
+          } else if (pila.top() == 0) {
               tupla_rutina *it_nueva_rutina = instr_a_ejecutar.itRut;
               if (it_nueva_rutina) {
                   dirMemoriaActual = it_nueva_rutina->direccion;
@@ -287,7 +295,7 @@ int calculadora::valorEnInstante(variable variable_a_ver, int instante_a_ver) co
         iterador++;
         instante = get<1>(*(iterador));
       }
-      if(instante_a_ver > instante){
+      if(instante_a_ver >= instante){
         valor = get<0>(*(iterador));
       }
       return valor;
