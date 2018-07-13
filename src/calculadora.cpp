@@ -21,7 +21,10 @@ calculadora::calculadora(){
     dirMemoriaActual = -1;
 
 }
-calculadora::calculadora(Programa &program, rutina &rut, int w){
+calculadora::calculadora(Programa &program, const rutina &rut, int w){
+  if(program.rutinas().empty()){
+      dirMemoriaActual = -1;
+  }
   int long_total = 0;
   set<rutina> rutinas = program.rutinas();
   typename std::set<rutina>::iterator i =  rutinas.begin();
@@ -102,122 +105,124 @@ calculadora::calculadora(Programa &program, rutina &rut, int w){
     }
 
 void calculadora::ejecutar(){
-  assert(dirMemoriaActual>=0);
-  instr instr_a_ejecutar = memoria[dirMemoriaActual];
-  indiceInstrActualEnRut++;
-  if(indiceInstrActualEnRut == longitudRutinaActual) {
-    dirMemoriaActual = -2;
-  }
-  dirMemoriaActual++;
-  if(instr_a_ejecutar.op == JUMP){
-    tupla_rutina* it_nueva_rutina = instr_a_ejecutar.itRut;
-    if(it_nueva_rutina){
-      dirMemoriaActual = it_nueva_rutina->direccion;
-      longitudRutinaActual = it_nueva_rutina->longitud;
-      indiceInstrActualEnRut = 0;
-      rutinaActual = it_nueva_rutina->nombre;
-    }else{
-      dirMemoriaActual = -1;
-    }
-  }
-  if(instr_a_ejecutar.op == JUMPZ && !pila.empty()){
-    if(pila.top() == 0){
-      tupla_rutina* it_nueva_rutina = instr_a_ejecutar.itRut;
-      if(it_nueva_rutina){
-        dirMemoriaActual = it_nueva_rutina->direccion;
-        longitudRutinaActual = it_nueva_rutina->longitud;
-        indiceInstrActualEnRut = 0;
-        rutinaActual = it_nueva_rutina->nombre;
+  if(!finalizo()) {
+      assert(dirMemoriaActual >= 0);
+      instr instr_a_ejecutar = memoria[dirMemoriaActual];
+      indiceInstrActualEnRut++;
+      if (indiceInstrActualEnRut == longitudRutinaActual) {
+          dirMemoriaActual = -2;
       }
-    }
-  }
-  if(instr_a_ejecutar.op == READ){
-    if(instr_a_ejecutar.itVar){
-      tupla_variables variable_a_leer =*(instr_a_ejecutar.itVar);
-      if(!(*(variable_a_leer.valoresViejos)).empty()){
-        tuple<int, int> tupla = make_tuple(0, instanteActual);
-        (*(variable_a_leer.valoresViejos)).push_back(tupla);
-        (*(variable_a_leer.valoresRecientes)).registrar(tupla);
+      dirMemoriaActual++;
+      if (instr_a_ejecutar.op == JUMP) {
+          tupla_rutina *it_nueva_rutina = instr_a_ejecutar.itRut;
+          if (it_nueva_rutina) {
+              dirMemoriaActual = it_nueva_rutina->direccion;
+              longitudRutinaActual = it_nueva_rutina->longitud;
+              indiceInstrActualEnRut = 0;
+              rutinaActual = it_nueva_rutina->nombre;
+          } else {
+              dirMemoriaActual = -1;
+          }
       }
-      tuple<int, int> new_tuple = (*(variable_a_leer.valoresViejos)).back();
-      pila.push(get<0>(new_tuple));
-    }else{
-      pila.push(0);
+      if (instr_a_ejecutar.op == JUMPZ && !pila.empty()) {
+          if (pila.top() == 0) {
+              tupla_rutina *it_nueva_rutina = instr_a_ejecutar.itRut;
+              if (it_nueva_rutina) {
+                  dirMemoriaActual = it_nueva_rutina->direccion;
+                  longitudRutinaActual = it_nueva_rutina->longitud;
+                  indiceInstrActualEnRut = 0;
+                  rutinaActual = it_nueva_rutina->nombre;
+              }
+          }
+      }
+      if (instr_a_ejecutar.op == READ) {
+          if (instr_a_ejecutar.itVar) {
+              tupla_variables variable_a_leer = *(instr_a_ejecutar.itVar);
+              if (!(*(variable_a_leer.valoresViejos)).empty()) {
+                  tuple<int, int> tupla = make_tuple(0, instanteActual);
+                  (*(variable_a_leer.valoresViejos)).push_back(tupla);
+                  (*(variable_a_leer.valoresRecientes)).registrar(tupla);
+              }
+              tuple<int, int> new_tuple = (*(variable_a_leer.valoresViejos)).back();
+              pila.push(get<0>(new_tuple));
+          } else {
+              pila.push(0);
 
-    }
-  }
-  if(instr_a_ejecutar.op == WRITE){
-    if(instr_a_ejecutar.itVar){
-    tupla_variables variable_a_escribir =*(instr_a_ejecutar.itVar);
-    int valor_a_escribir;
-    if(pila.empty()){
-      valor_a_escribir = 0;
-    }else{
-      valor_a_escribir = pila.top();
-      pila.pop();
-    }
-    (*(variable_a_escribir.valoresViejos)).push_back(make_tuple(valor_a_escribir, instanteActual));
-    (*(variable_a_escribir.valoresRecientes)).registrar(make_tuple(valor_a_escribir, instanteActual));
-  }
- }
-  if(instr_a_ejecutar.op == MULT){
-    if(pila.size() < 2){
-      if (pila.size() == 1){
-        int valor = pila.top();
-        pila.pop();
-        pila.push(0);
-      }else{
-        pila.push(0);
+          }
       }
-    }else{
-      int valor1 = pila.top();
-      pila.pop();
-      int valor2 = pila.top();
-      pila.pop();
-      pila.push(valor1*valor2);
-    }
-
-  }
-  if(instr_a_ejecutar.op == SUB){
-    if(pila.size() < 2){
-      if (pila.size() == 1){
-        int valor = pila.top();
-        pila.pop();
-        pila.push(0 - valor);
-      }else{
-        pila.push(0);
+      if (instr_a_ejecutar.op == WRITE) {
+          if (instr_a_ejecutar.itVar) {
+              tupla_variables variable_a_escribir = *(instr_a_ejecutar.itVar);
+              int valor_a_escribir;
+              if (pila.empty()) {
+                  valor_a_escribir = 0;
+              } else {
+                  valor_a_escribir = pila.top();
+                  pila.pop();
+              }
+              (*(variable_a_escribir.valoresViejos)).push_back(make_tuple(valor_a_escribir, instanteActual));
+              (*(variable_a_escribir.valoresRecientes)).registrar(make_tuple(valor_a_escribir, instanteActual));
+          }
       }
-    }else{
-      int valor1 = pila.top();
-      pila.pop();
-      int valor2 = pila.top();
-      pila.pop();
-      pila.push(valor2-valor1);
-    }
+      if (instr_a_ejecutar.op == MULT) {
+          if (pila.size() < 2) {
+              if (pila.size() == 1) {
+                  int valor = pila.top();
+                  pila.pop();
+                  pila.push(0);
+              } else {
+                  pila.push(0);
+              }
+          } else {
+              int valor1 = pila.top();
+              pila.pop();
+              int valor2 = pila.top();
+              pila.pop();
+              pila.push(valor1 * valor2);
+          }
 
-  }
-  if(instr_a_ejecutar.op == ADD){
-    if(pila.size() < 2){
-      if (pila.size() == 1){
-        int valor = pila.top();
-        pila.pop();
-        pila.push(valor);
-      }else{
-        pila.push(0);
       }
-    }else{
-      int valor1 = pila.top();
-      pila.pop();
-      int valor2 = pila.top();
-      pila.pop();
-      pila.push(valor1+valor2);
-    }
-    }
+      if (instr_a_ejecutar.op == SUB) {
+          if (pila.size() < 2) {
+              if (pila.size() == 1) {
+                  int valor = pila.top();
+                  pila.pop();
+                  pila.push(0 - valor);
+              } else {
+                  pila.push(0);
+              }
+          } else {
+              int valor1 = pila.top();
+              pila.pop();
+              int valor2 = pila.top();
+              pila.pop();
+              pila.push(valor2 - valor1);
+          }
 
-  if(instr_a_ejecutar.op == PUSH){
-    pila.push(instr_a_ejecutar.cte);
+      }
+      if (instr_a_ejecutar.op == ADD) {
+          if (pila.size() < 2) {
+              if (pila.size() == 1) {
+                  int valor = pila.top();
+                  pila.pop();
+                  pila.push(valor);
+              } else {
+                  pila.push(0);
+              }
+          } else {
+              int valor1 = pila.top();
+              pila.pop();
+              int valor2 = pila.top();
+              pila.pop();
+              pila.push(valor1 + valor2);
+          }
+      }
+
+      if (instr_a_ejecutar.op == PUSH) {
+          pila.push(instr_a_ejecutar.cte);
+      }
+      instanteActual++;
   }
-  instanteActual++;
 }
 
 bool calculadora::finalizo() const{

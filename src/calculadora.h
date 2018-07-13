@@ -2,6 +2,7 @@
 #define CALCULADORA_H_
 
 #include <iostream>
+#include "string"
 #include "utils.h"
 #include "Ventana.h"
 #include "programa.h"
@@ -17,7 +18,7 @@ class calculadora {
 public:
 
 	calculadora();
-	calculadora(Programa &program, rutina &rut, int w);
+	calculadora(Programa &program, const rutina &rut, int w);
 	/*  FUNCIONES DE PROGRAMA
 	longitud(programa, rutina) -> int
 	rutinas(programa) -> conj(rutina)
