@@ -1,4 +1,15 @@
 template<class T>
+Ventana<T>::Ventana() {
+    _capacidad = 1;
+    _tam = 0;
+    _start = 0;
+    _elems = new T*[_capacidad];
+    for (int i = 0; i < _capacidad; i++) {
+        _elems[i] = nullptr;
+    }
+}
+
+template<class T>
 Ventana<T>::Ventana(int capacidad) {
     _capacidad = capacidad;
     _tam = 0;
@@ -65,11 +76,11 @@ Ventana<T>& Ventana<T>::operator=(const Ventana<T>& o) {
     if (_elems != nullptr) {
         delete [] _elems;
     }
-    
+
     _capacidad = o._capacidad;
     _tam = o._tam;
     _start = o._start;
-    
+
     _elems = new T*[_capacidad];
     for (int i = 0; i < _tam; i++) {
         _elems[i] = new T(*o._elems[i]);

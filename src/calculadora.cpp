@@ -1,14 +1,14 @@
 #include "calculadora.h"
 
-int busquedaBinaria(Ventana<tuple<int, int>> ventana, int min, int max, int value){
+int busquedaBinaria(Ventana<tuple<int, int>>& ventana, int min, int max, int value){
     int tam = max - min;
     if(tam > 1){
       int mid = min + (tam / 2);
       if(get<1>(ventana[mid]) > value){
-        busquedaBinaria(ventana, min, mid, value);
+        return busquedaBinaria(ventana, min, mid, value);
       }else{
         if(get<1>(ventana[mid]) < value){
-          busquedaBinaria(ventana, mid, max, value);
+          return busquedaBinaria(ventana, mid, max, value);
         }else{
           return mid;
         }
@@ -80,7 +80,7 @@ calculadora::calculadora(Programa &program, const rutina &rut, int w){
         }
         memoria[m].itVar = it_variable;
       } else if ((*j).get_operacion() == JUMP || (*j).get_operacion() == JUMPZ) {
-        memoria[m].rut = *i;
+        memoria[m].rut = (*j).get_rutina();
       } else {
         memoria[m].cte = (*j).get_valor();
       }
@@ -108,58 +108,82 @@ void calculadora::ejecutar(){
   if(!finalizo()) {
       assert(dirMemoriaActual >= 0);
       instr instr_a_ejecutar = memoria[dirMemoriaActual];
+//      printf("dir:%d : indice:%d, instr.op : %d \n",dirMemoriaActual, indiceInstrActualEnRut , instr_a_ejecutar.op);
       indiceInstrActualEnRut++;
       if (indiceInstrActualEnRut == longitudRutinaActual) {
           dirMemoriaActual = -2;
       }
       dirMemoriaActual++;
       if (instr_a_ejecutar.op == JUMP) {
-          tupla_rutina *it_nueva_rutina = instr_a_ejecutar.itRut;
-          if (it_nueva_rutina) {
-              dirMemoriaActual = it_nueva_rutina->direccion;
-              longitudRutinaActual = it_nueva_rutina->longitud;
+          //tupla_rutina *it_nueva_rutina = instr_a_ejecutar.itRut;
+      //    printf("%s\n", instr_a_ejecutar.rut );
+          if (rutinas_calc.definida(instr_a_ejecutar.rut) ) {
+              tupla_rutina nueva_rutina = rutinas_calc.at(instr_a_ejecutar.rut);
+              longitudRutinaActual = nueva_rutina.longitud;
+              dirMemoriaActual = nueva_rutina.direccion;
               indiceInstrActualEnRut = 0;
-              rutinaActual = it_nueva_rutina->nombre;
+              rutinaActual = nueva_rutina.nombre;
           } else {
               dirMemoriaActual = -1;
           }
       }
       if (instr_a_ejecutar.op == JUMPZ) {
           if(pila.empty()){
-              tupla_rutina *it_nueva_rutina = instr_a_ejecutar.itRut;
-              if (it_nueva_rutina) {
-                  dirMemoriaActual = it_nueva_rutina->direccion;
-                  longitudRutinaActual = it_nueva_rutina->longitud;
-                  indiceInstrActualEnRut = 0;
-                  rutinaActual = it_nueva_rutina->nombre;
+            tupla_rutina nueva_rutina = rutinas_calc.at(instr_a_ejecutar.rut);
+      //      printf("%s\n", instr_a_ejecutar.rut );
+//              tupla_rutina *it_nueva_rutina = instr_a_ejecutar.itRut;
+//            if (it_nueva_rutina) {
+            if (rutinas_calc.definida(nueva_rutina.nombre) ) {
+                longitudRutinaActual = nueva_rutina.longitud;
+                dirMemoriaActual = nueva_rutina.direccion;
+                indiceInstrActualEnRut = 0;
+                rutinaActual = nueva_rutina.nombre;
+              //  dirMemoriaActual = it_nueva_rutina->direccion;
+              //    longitudRutinaActual = it_nueva_rutina->longitud;
+              //    indiceInstrActualEnRut = 0;
+              //    rutinaActual = it_nueva_rutina->nombre;
               }
           } else if (pila.top() == 0) {
-              tupla_rutina *it_nueva_rutina = instr_a_ejecutar.itRut;
+            tupla_rutina nueva_rutina = rutinas_calc.at(instr_a_ejecutar.rut);
+      //      printf("%s\n", instr_a_ejecutar.rut );
+            if (rutinas_calc.definida(nueva_rutina.nombre) ) {
+                longitudRutinaActual = nueva_rutina.longitud;
+                dirMemoriaActual = nueva_rutina.direccion;
+                indiceInstrActualEnRut = 0;
+                rutinaActual = nueva_rutina.nombre;
+/*              tupla_rutina *it_nueva_rutina = instr_a_ejecutar.itRut;
               if (it_nueva_rutina) {
                   dirMemoriaActual = it_nueva_rutina->direccion;
                   longitudRutinaActual = it_nueva_rutina->longitud;
                   indiceInstrActualEnRut = 0;
-                  rutinaActual = it_nueva_rutina->nombre;
+                  rutinaActual = it_nueva_rutina->nombre; */
               }
           }
       }
       if (instr_a_ejecutar.op == READ) {
-          if (instr_a_ejecutar.itVar) {
-              tupla_variables variable_a_leer = *(instr_a_ejecutar.itVar);
-              if (!(*(variable_a_leer.valoresViejos)).empty()) {
+          if (instr_a_ejecutar.itVar && variables.definida(instr_a_ejecutar.var)) {
+            //tupla_variables variable_a_leer = *(instr_a_ejecutar.itVar);
+            tupla_variables variable_a_leer = variables.at(instr_a_ejecutar.var);
+            if(!(variable_a_leer.valoresRecientes)->tam()){
+              tuple<int, int> tupla = make_tuple(0, instanteActual);
+              (variable_a_leer.valoresViejos)->push_back(tupla);
+              (*(variable_a_leer.valoresRecientes)).registrar(tupla);
+            }
+              /*if (!(*(variable_a_leer.valoresViejos)).empty()) {
                   tuple<int, int> tupla = make_tuple(0, instanteActual);
                   (*(variable_a_leer.valoresViejos)).push_back(tupla);
                   (*(variable_a_leer.valoresRecientes)).registrar(tupla);
-              }
-              tuple<int, int> new_tuple = (*(variable_a_leer.valoresViejos)).back();
+              }*/
+              tuple<int, int> new_tuple = (variable_a_leer.valoresViejos)->back();
               pila.push(get<0>(new_tuple));
+
           } else {
               pila.push(0);
 
           }
       }
       if (instr_a_ejecutar.op == WRITE) {
-          if (instr_a_ejecutar.itVar) {
+          /*if (instr_a_ejecutar.itVar) {
               tupla_variables variable_a_escribir = *(instr_a_ejecutar.itVar);
               int valor_a_escribir;
               if (pila.empty()) {
@@ -170,6 +194,18 @@ void calculadora::ejecutar(){
               }
               (*(variable_a_escribir.valoresViejos)).push_back(make_tuple(valor_a_escribir, instanteActual));
               (*(variable_a_escribir.valoresRecientes)).registrar(make_tuple(valor_a_escribir, instanteActual));
+          }*/
+          if(variables.definida(instr_a_ejecutar.var)){
+            tupla_variables variable_a_escribir = variables.at(instr_a_ejecutar.var);
+            int valor_a_escribir;
+            if (pila.empty()) {
+                valor_a_escribir = 0;
+            } else {
+                valor_a_escribir = pila.top();
+                pila.pop();
+            }
+          //  (variable_a_escribir.valoresViejos)->push_back(make_tuple(valor_a_escribir, instanteActual));
+          //  (*(variable_a_escribir.valoresRecientes)).registrar(make_tuple(valor_a_escribir, instanteActual));
           }
       }
       if (instr_a_ejecutar.op == MULT) {
@@ -239,7 +275,7 @@ bool calculadora::finalizo() const{
 
 void calculadora::asignarVariable(variable variable_a_asignar, int valor_a_asignar){
   if(variables.definida(variable_a_asignar)){
-    tupla_variables nueva_tupla =  variables[variable_a_asignar];
+    tupla_variables nueva_tupla =  variables.at(variable_a_asignar);
     (*(nueva_tupla).valoresViejos).push_back(make_tuple(valor_a_asignar, instanteActual));
     (*(nueva_tupla).valoresRecientes).registrar(make_tuple(valor_a_asignar, instanteActual));
   }else{
@@ -278,13 +314,13 @@ int calculadora::valorEnInstante(variable variable_a_ver, int instante_a_ver) co
   if(variables. definida(variable_a_ver)){
     tupla_variables significado =  variables.at(variable_a_ver);
     if(instante_a_ver < (*(significado.valoresRecientes)).tam()){
-      int indice_ventana = busquedaBinaria(*(significado.valoresRecientes), 0, (*(significado.valoresRecientes)).tam(), instante_a_ver);
+//      int indice_ventana = busquedaBinaria(*(significado.valoresRecientes), 0, (*(significado.valoresRecientes)).tam(), instante_a_ver);
        /*
         *     Busqueda binaria sobre los indices de la ventana y
         *     me quedo con el indice mas chico en el caso de que
         *     el indice que busco no este.
         */
-      return get<0>((*(significado.valoresRecientes))[indice_ventana]);
+      return get<0>((*(significado.valoresRecientes))[0]);
     }else{
       list<tuple<int, int>> lista = *(significado.valoresViejos);
       list<tuple<int, int>>::iterator iterador = lista.begin();

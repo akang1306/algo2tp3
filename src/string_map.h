@@ -92,7 +92,7 @@ private:
     int _size;
 
     void destructor_recursivo(Nodo* p);
-    //void iguales_recursivo( Nodo* p1, const Nodo* p2);
+    void iguales_recursivo( Nodo* p1, const Nodo* p2);
 };
 
 #include "string_map.hpp"

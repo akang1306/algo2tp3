@@ -5,6 +5,7 @@
 template<class T>
 class Ventana {
 public:
+  Ventana();
     Ventana(int capacidad);
     Ventana(const Ventana& o);
     ~Ventana();
