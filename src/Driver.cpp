@@ -75,7 +75,6 @@ void Driver::comenzarEjecucion(string rutina, int capacidadVentana) {
     // COMPLETAR
 
     _calculadora = calculadora(_programa, rutina, capacidadVentana);
-    int i = 0;
 }
 
 void Driver::asignarVariable(string x, int valor) {

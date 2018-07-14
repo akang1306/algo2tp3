@@ -14,33 +14,23 @@ TEST(test_calculadora, programa_vacio){
 TEST(test_calculadora, test_1){
     Programa p;
     p.agregarInstruccion("A", Instruccion(PUSH, 5, "a", "a"));
-    p.agregarInstruccion("A", Instruccion(JUMP, 0, "a", "J"));
+    p.agregarInstruccion("A", Instruccion(JUMPZ, 0, "a", "J"));
     calculadora c(p, "A", 2);
     c.ejecutar();
     ASSERT_FALSE(c.finalizo());
     EXPECT_EQ(c.instante_actual(), 1);
-    EXPECT_EQ(c.indiceInstruccionActual(), 0);
-    c.ejecutar();
     EXPECT_EQ(c.indiceInstruccionActual(), 1);
+    c.ejecutar();
+    EXPECT_EQ(c.indiceInstruccionActual(), 2);
     ASSERT_TRUE(c.finalizo());
     EXPECT_EQ(c.instante_actual(), 2);
-
-    p.agregarInstruccion("J", Instruccion(ADD, 0, "a", "a"));
-    p.agregarInstruccion("J", Instruccion(JUMPZ, 0, "a", "A"));
-    c.ejecutar();
-    ASSERT_FALSE(c.finalizo());
-    EXPECT_EQ(c.topPila(), 5);
-    EXPECT_EQ(c.instante_actual(), 3);
-    c.ejecutar();
-    EXPECT_EQ(c.instante_actual(), 4);
-    ASSERT_TRUE(c.finalizo());
 }
 
 TEST(test_calculadora, test_2){
     Programa q;
     q.agregarInstruccion("algo", Instruccion(PUSH, 5, "a", "a"));
     q.agregarInstruccion("algo", Instruccion(WRITE, 0, "X", "a"));
-    q.agregarInstruccion("algo", Instruccion(JUMPZ, 0, "a", "rutina"));
+    q.agregarInstruccion("algo", Instruccion(JUMP, 0, "a", "rutina"));
     q.agregarInstruccion("rutina", Instruccion(PUSH, 10, "a", "a"));
     calculadora c(q, "algo", 3);
     c.ejecutar();
@@ -58,7 +48,7 @@ TEST(test_calculadora, test_2){
     EXPECT_EQ(c.indiceInstruccionActual(), 0);
     c.ejecutar();
     EXPECT_EQ(c.nombreRutinaActual(), "rutina");
-    //EXPECT_EQ(c.indiceInstruccionActual(), 0); acá debería ser 0 o 1?
+    EXPECT_EQ(c.indiceInstruccionActual(), 1);
     ASSERT_TRUE(c.finalizo());
 }
 
