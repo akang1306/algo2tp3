@@ -183,7 +183,7 @@ void calculadora::ejecutar(){
           }
       }
       if (instr_a_ejecutar.op == WRITE) {
-          /*if (instr_a_ejecutar.itVar) {
+          if (instr_a_ejecutar.itVar) {
               tupla_variables variable_a_escribir = *(instr_a_ejecutar.itVar);
               int valor_a_escribir;
               if (pila.empty()) {
@@ -194,7 +194,7 @@ void calculadora::ejecutar(){
               }
               (*(variable_a_escribir.valoresViejos)).push_back(make_tuple(valor_a_escribir, instanteActual));
               (*(variable_a_escribir.valoresRecientes)).registrar(make_tuple(valor_a_escribir, instanteActual));
-          }*/
+          }/*
           if(variables.definida(instr_a_ejecutar.var)){
             tupla_variables variable_a_escribir = variables.at(instr_a_ejecutar.var);
             int valor_a_escribir;
@@ -206,7 +206,7 @@ void calculadora::ejecutar(){
             }
             (variable_a_escribir.valoresViejos)->push_back(make_tuple(valor_a_escribir, instanteActual));
             (*(variable_a_escribir.valoresRecientes)).registrar(make_tuple(valor_a_escribir, instanteActual));
-          }
+          }*/
       }
       if (instr_a_ejecutar.op == MULT) {
           if (pila.size() < 2) {
