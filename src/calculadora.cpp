@@ -204,8 +204,8 @@ void calculadora::ejecutar(){
                 valor_a_escribir = pila.top();
                 pila.pop();
             }
-          //  (variable_a_escribir.valoresViejos)->push_back(make_tuple(valor_a_escribir, instanteActual));
-          //  (*(variable_a_escribir.valoresRecientes)).registrar(make_tuple(valor_a_escribir, instanteActual));
+            (variable_a_escribir.valoresViejos)->push_back(make_tuple(valor_a_escribir, instanteActual));
+            (*(variable_a_escribir.valoresRecientes)).registrar(make_tuple(valor_a_escribir, instanteActual));
           }
       }
       if (instr_a_ejecutar.op == MULT) {
