@@ -75,9 +75,9 @@ public:
      * devuelve true si no hay ningún elemento en el diccionario */
     bool empty() const;
 
-    T* definir(string palabra, T significado);
-    Ventana<tuple<int, int>>* definir_ventana(string clave, Ventana<tuple<int, int>> significado);
-    bool definida(string clave) const;
+    T* definir(string& palabra, T& significado);
+    Ventana<tuple<int, int>>* definir_ventana(string& clave, Ventana<tuple<int, int>>& significado);
+    bool definida(string& clave) const;
 
 
 private:

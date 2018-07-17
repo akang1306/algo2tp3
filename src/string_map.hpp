@@ -192,13 +192,13 @@ bool string_map<T>::empty() const{
 }
 
 template <typename T>
-bool string_map<T>::definida(string clave) const{
+bool string_map<T>::definida(string& clave) const{
     // COMPLETAR
     return count(clave)==1;
 }
 
 template <typename T>
-T* string_map<T>::definir(string clave, T significado){
+T* string_map<T>::definir(string& clave, T& significado){
     if (raiz == NULL){
       raiz = new Nodo;
     }
@@ -218,7 +218,7 @@ T* string_map<T>::definir(string clave, T significado){
 }
 
 template <typename T>
-Ventana<tuple<int, int>>* string_map<T>::definir_ventana(string clave, Ventana<tuple<int, int>> significado){
+Ventana<tuple<int, int>>* string_map<T>::definir_ventana(string& clave, Ventana<tuple<int, int>>& significado){
     if (raiz == NULL){
       raiz = new Nodo;
     }
@@ -230,7 +230,7 @@ Ventana<tuple<int, int>>* string_map<T>::definir_ventana(string clave, Ventana<t
       buscador = buscador->siguientes[int(clave[i])];
     }
     if(buscador->definicion == NULL ){
-          buscador->definicion = new Ventana<tuple<int, int>>(significado.tam());
+          buscador->definicion = new Ventana<tuple<int, int>>(significado.capacidad());
           _size ++;
     }
     *(buscador->definicion) = significado;
