@@ -139,36 +139,35 @@ void calculadora::ejecutar(){
           }
       }
       if (instr_a_ejecutar.op == JUMPZ) {
-          if(pila.empty()){
-            tupla_rutina nueva_rutina = rutinas_calc.at(instr_a_ejecutar.rut);
-      //    printf("%s\n", instr_a_ejecutar.rut );
-//          tupla_rutina *it_nueva_rutina = instr_a_ejecutar.itRut;
-//          if (it_nueva_rutina) {
-            if (rutinas_calc.definida(nueva_rutina.nombre) ) {
-                longitudRutinaActual = nueva_rutina.longitud;
-                dirMemoriaActual = nueva_rutina.direccion;
-                indiceInstrActualEnRut = 0;
-                rutinaActual = nueva_rutina.nombre;
-              //    dirMemoriaActual = it_nueva_rutina->direccion;
-              //    longitudRutinaActual = it_nueva_rutina->longitud;
-              //    indiceInstrActualEnRut = 0;
-              //    rutinaActual = it_nueva_rutina->nombre;
+          if(!pila.empty()){
+              if(pila.top() != 0){
+                  instanteActual++;
+                  return;
               }
-          } else if (pila.top() == 0) {
-            tupla_rutina nueva_rutina = rutinas_calc.at(instr_a_ejecutar.rut);
-      //      printf("%s\n", instr_a_ejecutar.rut );
-            if (rutinas_calc.definida(nueva_rutina.nombre) ) {
-                longitudRutinaActual = nueva_rutina.longitud;
-                dirMemoriaActual = nueva_rutina.direccion;
-                indiceInstrActualEnRut = 0;
-                rutinaActual = nueva_rutina.nombre;
-/*              tupla_rutina *it_nueva_rutina = instr_a_ejecutar.itRut;
-              if (it_nueva_rutina) {
-                  dirMemoriaActual = it_nueva_rutina->direccion;
-                  longitudRutinaActual = it_nueva_rutina->longitud;
+          }
+          if (rutinas_calc.definida(instr_a_ejecutar.rut)) {
+              tupla_rutina nueva_rutina = rutinas_calc.at(instr_a_ejecutar.rut);
+              if (rutinas_calc.definida(nueva_rutina.nombre)) {
+                  longitudRutinaActual = nueva_rutina.longitud;
+                  dirMemoriaActual = nueva_rutina.direccion;
                   indiceInstrActualEnRut = 0;
-                  rutinaActual = it_nueva_rutina->nombre; */
+                  rutinaActual = nueva_rutina.nombre;
+                  //    dirMemoriaActual = it_nueva_rutina->direccion;
+                  //    longitudRutinaActual = it_nueva_rutina->longitud;
+                  //    indiceInstrActualEnRut = 0;
+                  //    rutinaActual = it_nueva_rutina->nombre;
               }
+          /*
+           *   tupla_rutina *it_nueva_rutina = instr_a_ejecutar.itRut;
+           *   if (it_nueva_rutina) {
+           *       dirMemoriaActual = it_nueva_rutina->direccion;
+           *       longitudRutinaActual = it_nueva_rutina->longitud;
+           *       indiceInstrActualEnRut = 0;
+           *       rutinaActual = it_nueva_rutina->nombre;
+           *   }
+           */
+          }else{
+              dirMemoriaActual = -1;
           }
       }
       if (instr_a_ejecutar.op == READ) {
