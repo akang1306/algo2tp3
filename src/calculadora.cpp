@@ -360,7 +360,13 @@ int calculadora::valorEnInstante(variable variable_a_ver, int instante_a_ver) co
         list<tuple<int, int>> lista = valoresViejos.at(variable_a_ver);
         list<tuple<int, int>>::iterator iterador = lista.begin();
         int valor = get<0>(*(iterador));
+        if(get<1>(*(iterador))>instante_a_ver){
+            return 0;
+        }
         iterador++;
+        if(iterador == lista.end()){
+            return valor;
+        }
         int instante = get<1>(*(iterador));
         while(iterador!=lista.end() && instante_a_ver > instante){
       //    printf("valor: %d instante: %d ,  busco instante %d) \n", valor, instante, instante_a_ver );
