@@ -13,8 +13,10 @@ TEST(test_calculadora, programa_vacio){
 
 TEST(test_calculadora, test_1){
     Programa p;
-    p.agregarInstruccion("A", Instruccion(PUSH, 5, "a", "a"));
-    p.agregarInstruccion("A", Instruccion(JUMPZ, 0, "a", "J"));
+    Instruccion push = Instruccion(PUSH, 5, "a", "a");
+    Instruccion jumpz = Instruccion(JUMPZ, 0, "a", "J");
+    p.agregarInstruccion("A", push);
+    p.agregarInstruccion("A", jumpz);
     calculadora c(p, "A", 2);
     c.ejecutar();
     ASSERT_FALSE(c.finalizo());
@@ -28,10 +30,14 @@ TEST(test_calculadora, test_1){
 
 TEST(test_calculadora, test_2){
     Programa q;
-    q.agregarInstruccion("algo", Instruccion(PUSH, 5, "a", "a"));
-    q.agregarInstruccion("algo", Instruccion(WRITE, 0, "X", "a"));
-    q.agregarInstruccion("algo", Instruccion(JUMP, 0, "a", "rutina"));
-    q.agregarInstruccion("rutina", Instruccion(PUSH, 10, "a", "a"));
+    Instruccion push = Instruccion(PUSH, 5, "a", "a");
+    Instruccion write = Instruccion(WRITE, 0, "X", "a");
+    Instruccion jump = Instruccion(JUMP, 0, "a", "rutina");
+    Instruccion push2 = Instruccion(PUSH, 10, "a", "a");
+    q.agregarInstruccion("algo", push);
+    q.agregarInstruccion("algo", write);
+    q.agregarInstruccion("algo", jump);
+    q.agregarInstruccion("rutina", push2);
     calculadora c(q, "algo", 3);
     c.ejecutar();
     EXPECT_EQ(c.nombreRutinaActual(), "algo");
@@ -54,9 +60,12 @@ TEST(test_calculadora, test_2){
 
 TEST(test_calculadora, variable_no_inicializada){
     Programa p;
-    p.agregarInstruccion("A", Instruccion(READ, 0, "variable", "a"));
-    p.agregarInstruccion("A", Instruccion(PUSH, 2, "a", "a"));
-    p.agregarInstruccion("A", Instruccion(ADD, 0, "a", "a"));
+    Instruccion read = Instruccion(READ, 0, "variable", "a");
+    Instruccion push = Instruccion(PUSH, 2, "a", "a");
+    Instruccion jump = Instruccion(ADD, 0, "a", "a");
+    p.agregarInstruccion("A", read);
+    p.agregarInstruccion("A", push);
+    p.agregarInstruccion("A", jump);
     calculadora c(p, "A", 148);
     c.ejecutar();
     EXPECT_EQ(c.instante_actual(), 1);
@@ -70,12 +79,18 @@ TEST(test_calculadora, variable_no_inicializada){
 
 TEST(test_calculadora, valores_variables){
     Programa p;
-    p.agregarInstruccion("A", Instruccion(PUSH, 10, "a", "a"));
-    p.agregarInstruccion("A", Instruccion(WRITE, 0, "X", "a"));
-    p.agregarInstruccion("A", Instruccion(PUSH, 5, "a", "a"));
-    p.agregarInstruccion("A", Instruccion(PUSH, 1, "a", "a"));
-    p.agregarInstruccion("A", Instruccion(MULT, 0, "a", "a"));
-    p.agregarInstruccion("A", Instruccion(READ, 0, "Z", "a"));
+    Instruccion push = Instruccion(PUSH, 10, "a", "a");
+    Instruccion write = Instruccion(WRITE, 0, "X", "a");
+    Instruccion push2 = Instruccion(PUSH, 5, "a", "a");
+    Instruccion push3 = Instruccion(PUSH, 1, "a", "a");
+    Instruccion mult = Instruccion(MULT, 0, "a", "a");
+    Instruccion read = Instruccion(READ, 0, "Z", "a");
+    p.agregarInstruccion("A", push);
+    p.agregarInstruccion("A", write);
+    p.agregarInstruccion("A", push2);
+    p.agregarInstruccion("A", push3);
+    p.agregarInstruccion("A",  mult);
+    p.agregarInstruccion("A", read);
     calculadora c(p, "A", 2);
 
     for(int i = 1; i < 7; i++){

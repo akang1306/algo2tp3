@@ -4,7 +4,7 @@ Programa::Programa(){
     _rutinas = {};
 }
 
-void Programa::agregarInstruccion(rutina rut, Instruccion instr){
+void Programa::agregarInstruccion(rutina rut, Instruccion& instr){
   _rutinas.insert(rut);
   if(instruccionesPorRutina.count(rut) == 1){
     (get<1>(instruccionesPorRutina.at(rut))).push_back(instr);

@@ -218,8 +218,11 @@ void calculadora::ejecutar(){
                 valor_a_escribir = pila.top();
                 pila.pop();
             }
+            asignarVariable(instr_a_ejecutar.var, valor_a_escribir);
+/*
             (variable_a_escribir.valoresViejos)->push_back(make_tuple(valor_a_escribir, instanteActual));
             (*(variable_a_escribir.valoresRecientes)).registrar(make_tuple(valor_a_escribir, instanteActual));
+*/
           }
       }
       if (instr_a_ejecutar.op == MULT) {
@@ -295,7 +298,7 @@ void calculadora::asignarVariable(variable variable_a_asignar, int valor_a_asign
 //    (*(nueva_tupla.valoresRecientes)).registrar(make_tuple(valor_a_asignar, instanteActual));
       valoresViejos.at(variable_a_asignar).push_back(make_tuple(valor_a_asignar, instanteActual));
       (valoresRecientes.at(variable_a_asignar)).registrar(make_tuple(valor_a_asignar, instanteActual));
-      printf("pushie el valor %d , instante  %d\n", valor_a_asignar, instanteActual);
+    //  printf("pushie el valor %d , instante  %d\n", valor_a_asignar, instanteActual);
     }else{
       list<tuple<int, int>> nueva_lista;
       Ventana<tuple<int, int>> nueva_ventana = Ventana<tuple<int, int>>(1);
@@ -345,13 +348,13 @@ int calculadora::valorEnInstante(variable variable_a_ver, int instante_a_ver) co
           *     el indice que busco no este.
           */
         if(!(get<1>(valores[indice_ventana])>instante_a_ver)){
-          printf("indice dado: %d, el valor queda : %d\n", indice_ventana, get<0>(valoresRecientes.at(variable_a_ver)[indice_ventana]) );
+    //      printf("indice dado: %d, el valor queda : %d\n", indice_ventana, get<0>(valoresRecientes.at(variable_a_ver)[indice_ventana]) );
           return get<0>(valoresRecientes.at(variable_a_ver)[indice_ventana]);
         }
       }
       // int indice_ventana = busquedaBinaria( valores, 0, valores.tam(), instante_a_ver);
         for(int i=0;i<valores.tam();i++){
-          printf("valor %d : %d\n", i, get<0>(valores[i]) );
+    //      printf("valor %d : %d\n", i, get<0>(valores[i]) );
         }
 
         list<tuple<int, int>> lista = valoresViejos.at(variable_a_ver);
@@ -360,7 +363,7 @@ int calculadora::valorEnInstante(variable variable_a_ver, int instante_a_ver) co
         iterador++;
         int instante = get<1>(*(iterador));
         while(iterador!=lista.end() && instante_a_ver > instante){
-          printf("valor: %d instante: %d ,  busco instante %d) \n", valor, instante, instante_a_ver );
+      //    printf("valor: %d instante: %d ,  busco instante %d) \n", valor, instante, instante_a_ver );
           valor = get<0>(*(iterador));
           iterador++;
           instante = get<1>(*(iterador));

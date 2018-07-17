@@ -5,30 +5,39 @@
 
 TEST(test_programa, longitudRutina) {
     Programa p = Programa();
-    p.agregarInstruccion("A", Instruccion(PUSH, 2, "a", "a"));
-    p.agregarInstruccion("A", Instruccion(MULT, 0, "a", "a"));
-    p.agregarInstruccion("B", Instruccion(PUSH, 3, "a", "a"));
+    Instruccion push = Instruccion(PUSH, 2, "a", "a");
+    Instruccion mult = Instruccion(MULT, 0, "a", "a");
+    Instruccion push2 = Instruccion(PUSH, 3, "a", "a");
+    p.agregarInstruccion("A", push);
+    p.agregarInstruccion("A", mult);
+    p.agregarInstruccion("B", push2);
     EXPECT_EQ(p.longitud("A"), 2);
     EXPECT_EQ(p.longitud("B"), 1);
-    p.agregarInstruccion("A", Instruccion(SUB, 0, "a", "a"));
+    Instruccion sub = Instruccion(SUB, 0, "a", "a");
+    p.agregarInstruccion("A", sub);
     EXPECT_EQ(p.longitud("A"), 3);
 }
 
 TEST(test_programa, rutinas) {
     Programa p;
-    p.agregarInstruccion("A", Instruccion(PUSH, 2, "a", "a"));
-    p.agregarInstruccion("A", Instruccion(MULT, 0, "a", "a"));
-    p.agregarInstruccion("B", Instruccion(PUSH, 3, "a", "a"));
+    Instruccion push = Instruccion(PUSH, 2, "a", "a");
+    Instruccion mult = Instruccion(MULT, 0, "a", "a");
+    Instruccion push2 = Instruccion(PUSH, 3, "a", "a");
+    p.agregarInstruccion("A", push);
+    p.agregarInstruccion("A", mult);
+    p.agregarInstruccion("B", push2);
     std::set<rutina> test = {"A", "B"};
 //    EXPECT_EQ( p.rutinas(), test);
     std::set<rutina> test2 = {"A", "D", "B"};
-    p.agregarInstruccion("D", Instruccion(JUMP, 0, "a", "A"));
+    Instruccion jump = Instruccion(JUMP, 0, "a", "A");
+    p.agregarInstruccion("D", jump);
 //    EXPECT_EQ(p.rutinas(), test2);
 }
 
 TEST(test_programa, instruccion){
     Programa p;
-    p.agregarInstruccion("A", Instruccion(PUSH, 2, "a", "a"));
+    Instruccion push = Instruccion(PUSH, 2, "a", "a");
+    p.agregarInstruccion("A", push);
     Instruccion i = Instruccion(MULT, 0, "a", "a");
     p.agregarInstruccion("A", i);
     EXPECT_EQ((p.instruccion("A", 1).get_operacion()), i.get_operacion());

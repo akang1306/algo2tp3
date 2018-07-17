@@ -14,7 +14,7 @@ class Programa {
 public:
 
 	Programa();
-	void agregarInstruccion(rutina rut, Instruccion instr);
+	void agregarInstruccion(rutina rut, Instruccion& instr);
 	int longitud(rutina rut);
  	set<rutina> rutinas();
 	Instruccion instruccion(rutina rut, int indice);
